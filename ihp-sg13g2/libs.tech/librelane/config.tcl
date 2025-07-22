@@ -20,6 +20,19 @@ set ::env(GND_PIN_VOLTAGE) "0.00"
 set ::env(SCL_POWER_PINS) "VDD"
 set ::env(SCL_GROUND_PINS) "VSS"
 
+# TODO pin - net mapping?
+set ::env(IOVDD_PIN) "IOVPWR"
+set ::env(IOGND_PIN) "IOVGND"
+
+set ::env(IOVDD_PIN_VOLTAGE) "3.30"
+set ::env(IOGND_PIN_VOLTAGE) "0.00"
+
+set ::env(IO_POWER_PINS) "iovdd"
+set ::env(IO_GROUND_PINS) "iovss"
+
+set ::env(IO_POWER_PINS) "vdd"
+set ::env(IO_GROUND_PINS) "vss"
+
 # Technology LEF
 set ::env(TECH_LEF) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/$::env(STD_CELL_LIBRARY)/lef/sg13g2_tech.lef"
 set ::env(TECH_LEF_MIN) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/$::env(STD_CELL_LIBRARY)/lef/sg13g2_tech.lef"
@@ -32,15 +45,36 @@ set ::env(CELL_VERILOG_MODELS) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/$::env(STD
 set ::env(CELL_SPICE_MODELS) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/$::env(STD_CELL_LIBRARY)/spice/$::env(STD_CELL_LIBRARY).spice"
 set ::env(CELL_CDLS) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/$::env(STD_CELL_LIBRARY)/cdl/$::env(STD_CELL_LIBRARY).cdl"
 
-# GPIO Pads
-set ::env(GPIO_PADS_LEF) "\
-	$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sg13g2_io/lef/sg13g2_io.lef\
-	$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sg13g2_io/lef/sg13g2_io_notracks.lef\
+# IO pads
+set ::env(PAD_LEFS) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sg13g2_io/lef/sg13g2_io.lef"
+set ::env(PAD_GDS) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sg13g2_io/gds/sg13g2_io.gds"
+set ::env(PAD_VERILOG_MODELS) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sg13g2_io/verilog/sg13g2_io.v"
+set ::env(PAD_SPICE_MODELS) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sg13g2_io/spice/sg13g2_io.spi"
+set ::env(PAD_CDLS) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sg13g2_io/cdl/sg13g2_io.cdl"
+
+# Set IO pad information
+set ::env(PAD_CELLS) [dict create]
+# All IO pads have the same size
+dict set ::env(PAD_CELLS) "sg13g2_IOPad*" "80, 180"
+set ::env(PAD_CORNER) "sg13g2_Corner"
+set ::env(PAD_FILLERS) "\
+    sg13g2_Filler10000\
+    sg13g2_Filler4000\
+    sg13g2_Filler2000\
+    sg13g2_Filler1000\
+    sg13g2_Filler400\
+    sg13g2_Filler200\
 "
 
-set ::env(GPIO_PADS_VERILOG) "\
-	$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sg13g2_io/verilog/sg13g2_io.v
-"
+# Bondpad information
+# TODO bondpads need to be part of the PDK
+set ::env(PAD_BONDPAD) "bondpad_70x70"
+set ::env(PAD_BONDPAD_SIZE) "70"
+set ::env(PAD_BONDPAD_OFFSETS) [dict create]
+dict set ::env(PAD_BONDPAD_OFFSETS) "sg13g2_IOPad*" "5.0, -70.0"
+
+# Sealring offset
+set ::env(PAD_SEALRING_OFFSET) "70"
 
 ## magic setup
 set ::env(MAGICRC) "$::env(PDK_ROOT)/$::env(PDK)/libs.tech/magic/ihp-sg13g2.magicrc"
