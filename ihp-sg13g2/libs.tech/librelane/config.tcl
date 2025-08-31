@@ -20,19 +20,6 @@ set ::env(GND_PIN_VOLTAGE) "0.00"
 set ::env(SCL_POWER_PINS) "VDD"
 set ::env(SCL_GROUND_PINS) "VSS"
 
-# TODO pin - net mapping?
-set ::env(IOVDD_PIN) "IOVPWR"
-set ::env(IOGND_PIN) "IOVGND"
-
-set ::env(IOVDD_PIN_VOLTAGE) "3.30"
-set ::env(IOGND_PIN_VOLTAGE) "0.00"
-
-set ::env(IO_POWER_PINS) "iovdd"
-set ::env(IO_GROUND_PINS) "iovss"
-
-set ::env(IO_POWER_PINS) "vdd"
-set ::env(IO_GROUND_PINS) "vss"
-
 # Technology LEF
 set ::env(TECH_LEF) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/$::env(STD_CELL_LIBRARY)/lef/sg13g2_tech.lef"
 set ::env(TECH_LEF_MIN) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/$::env(STD_CELL_LIBRARY)/lef/sg13g2_tech.lef"
@@ -52,9 +39,18 @@ set ::env(PAD_VERILOG_MODELS) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sg13g2_io/v
 set ::env(PAD_SPICE_MODELS) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sg13g2_io/spice/sg13g2_io.spi"
 set ::env(PAD_CDLS) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sg13g2_io/cdl/sg13g2_io.cdl"
 
+# Pad IO sites
+set ::env(PAD_IO_SITE_NAME) "IOLibSite"
+set ::env(PAD_CORNER_SITE_NAME) "IOLibCSite"
+
+# Pad fake IO sites information
+set ::env(PAD_FAKE_IO_SITE_HEIGHT) "180"
+set ::env(PAD_FAKE_IO_SITE_WIDTH) "1"
+set ::env(PAD_FAKE_CORNER_SITE_HEIGHT) "180"
+set ::env(PAD_FAKE_CORNER_SITE_WIDTH) "180"
+
 # Set IO pad information
 set ::env(PAD_CELLS) [dict create]
-# All IO pads have the same size
 dict set ::env(PAD_CELLS) "sg13g2_IOPad*" "80, 180"
 set ::env(PAD_CORNER) "sg13g2_Corner"
 set ::env(PAD_FILLERS) "\
@@ -66,15 +62,19 @@ set ::env(PAD_FILLERS) "\
     sg13g2_Filler200\
 "
 
-# Bondpad information
+# Pad bondpad information (if needed)
 # TODO bondpads need to be part of the PDK
-set ::env(PAD_BONDPAD) "bondpad_70x70"
-set ::env(PAD_BONDPAD_SIZE) "70"
+set ::env(PAD_BONDPAD_NAME) "bondpad_70x70"
+set ::env(PAD_BONDPAD_WIDTH) "70"
+set ::env(PAD_BONDPAD_HEIGHT) "70"
 set ::env(PAD_BONDPAD_OFFSETS) [dict create]
 dict set ::env(PAD_BONDPAD_OFFSETS) "sg13g2_IOPad*" "5.0, -70.0"
 
+# Pad io terminals (if needed)
+#set ::env(PAD_PLACE_IO_TERMINALS)
+
 # Sealring offset
-set ::env(PAD_SEALRING_OFFSET) "70"
+set ::env(PAD_EDGE_SPACING) "140"
 
 ## magic setup
 set ::env(MAGICRC) "$::env(PDK_ROOT)/$::env(PDK)/libs.tech/magic/ihp-sg13g2.magicrc"
@@ -142,7 +142,7 @@ set ::env(FP_PDN_CORE_RING_HOFFSET) 4.5
 set ::env(MACRO_BLOCKAGES_LAYER) "Metal1 Metal2 Metal3 Metal4 Metal5 TopMetal1"
 
 # Used for parasitics estimation, IR drop analysis, etc
-set ::env(LAYERS_RC) [dict create]
+#set ::env(LAYERS_RC) [dict create]
 
 # Don't set RC values manually, they appear to be inaccurate
 # If not set, OpenROAD seems to pick them up from the tech lef?
