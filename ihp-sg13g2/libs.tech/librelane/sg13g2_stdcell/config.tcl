@@ -75,11 +75,6 @@ set ::env(CELL_PAD_EXCLUDE) "sg13g2_fill_* sg13g2_decap_*"
 set ::env(FP_PDN_RAIL_WIDTH) 0.44
 
 # CTS
-# Buffer selection still needs some work
-# There were situations where only the largest buffer was used
-# Ultimately, OpenROAD should select the buffers automatically
-#set ::env(CTS_ROOT_BUFFER) sg13g2_buf_8
-#set ::env(CTS_CLK_BUFFERS) "sg13g2_buf_8 sg13g2_buf_4 sg13g2_buf_2 sg13g2_buf_1"
 set ::env(CTS_ROOT_BUFFER) sg13g2_buf_16
 set ::env(CTS_CLK_BUFFERS) "sg13g2_buf_8 sg13g2_buf_4 sg13g2_buf_2"
 

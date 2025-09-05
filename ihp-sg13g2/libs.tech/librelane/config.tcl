@@ -144,9 +144,18 @@ set ::env(MACRO_BLOCKAGES_LAYER) "Metal1 Metal2 Metal3 Metal4 Metal5 TopMetal1"
 # Used for parasitics estimation, IR drop analysis, etc
 #set ::env(LAYERS_RC) [dict create]
 
-# Don't set RC values manually, they appear to be inaccurate
-# If not set, OpenROAD seems to pick them up from the tech lef?
-# TODO needs more investigation
+# RC fit from OpenROAD
+# https://github.com/The-OpenROAD-Project/OpenROAD-flow-scripts/commit/a3ea4d0a4c10cb65a5314ed541dfc1bc42979f8d
+dict set ::env(LAYERS_RC) "*" Metal1 res 8.54576E-03
+dict set ::env(LAYERS_RC) "*" Metal1 cap 1e-10
+dict set ::env(LAYERS_RC) "*" Metal2 res 2.53519E-03
+dict set ::env(LAYERS_RC) "*" Metal2 cap 1.69121E-04
+dict set ::env(LAYERS_RC) "*" Metal3 res 1.54329E-03
+dict set ::env(LAYERS_RC) "*" Metal3 cap 1.82832E-04
+dict set ::env(LAYERS_RC) "*" Metal4 res 6.31424E-04
+dict set ::env(LAYERS_RC) "*" Metal4 cap 1.66454E-04
+dict set ::env(LAYERS_RC) "*" Metal5 res 6.84051E-04
+dict set ::env(LAYERS_RC) "*" Metal5 cap 8.57431E-05
 
 # default values as converted by OpenROAD from the tech lef
 #dict set ::env(LAYERS_RC) "*" Metal1 res 8.437500e-04
@@ -163,56 +172,6 @@ set ::env(MACRO_BLOCKAGES_LAYER) "Metal1 Metal2 Metal3 Metal4 Metal5 TopMetal1"
 #dict set ::env(LAYERS_RC) "*" TopMetal1 cap 1.108496e-04
 #dict set ::env(LAYERS_RC) "*" TopMetal2 res 7.250000e-06
 #dict set ::env(LAYERS_RC) "*" TopMetal2 cap 9.006000e-05
-
-# twice the resistance and capacitance
-#dict set ::env(LAYERS_RC) "*" Metal1 res 16.875000e-04
-#dict set ::env(LAYERS_RC) "*" Metal1 cap 13.756800e-05
-#dict set ::env(LAYERS_RC) "*" Metal2 res 10.300000e-04
-#dict set ::env(LAYERS_RC) "*" Metal2 cap 18.604000e-05
-#dict set ::env(LAYERS_RC) "*" Metal3 res 10.300000e-04
-#dict set ::env(LAYERS_RC) "*" Metal3 cap 18.400000e-05
-#dict set ::env(LAYERS_RC) "*" Metal4 res 10.300000e-04
-#dict set ::env(LAYERS_RC) "*" Metal4 cap 18.357600e-05
-#dict set ::env(LAYERS_RC) "*" Metal5 res 10.300000e-04
-#dict set ::env(LAYERS_RC) "*" Metal5 cap 17.765200e-05
-#dict set ::env(LAYERS_RC) "*" TopMetal1 res 2.560976e-05
-#dict set ::env(LAYERS_RC) "*" TopMetal1 cap 2.216992e-04
-#dict set ::env(LAYERS_RC) "*" TopMetal2 res 14.500000e-06
-#dict set ::env(LAYERS_RC) "*" TopMetal2 cap 18.012000e-05
-
-# four times the resistance and capacitance
-# skews the clock tree into two parts
-#dict set ::env(LAYERS_RC) "*" Metal1 res 33.750000e-04
-#dict set ::env(LAYERS_RC) "*" Metal1 cap 27.513600e-05
-#dict set ::env(LAYERS_RC) "*" Metal2 res 20.600000e-04
-#dict set ::env(LAYERS_RC) "*" Metal2 cap 37.208000e-05
-#dict set ::env(LAYERS_RC) "*" Metal3 res 20.600000e-04
-#dict set ::env(LAYERS_RC) "*" Metal3 cap 36.800000e-05
-#dict set ::env(LAYERS_RC) "*" Metal4 res 20.600000e-04
-#dict set ::env(LAYERS_RC) "*" Metal4 cap 36.715200e-05
-#dict set ::env(LAYERS_RC) "*" Metal5 res 20.600000e-04
-#dict set ::env(LAYERS_RC) "*" Metal5 cap 35.530400e-05
-#dict set ::env(LAYERS_RC) "*" TopMetal1 res 5.121952e-05
-#dict set ::env(LAYERS_RC) "*" TopMetal1 cap 4.433984e-04
-#dict set ::env(LAYERS_RC) "*" TopMetal2 res 29.000000e-06
-#dict set ::env(LAYERS_RC) "*" TopMetal2 cap 36.024000e-05
-
-# 10 times the resistance and capacitance
-# even worse
-#dict set ::env(LAYERS_RC) "*" Metal1 res 8.437500e-03
-#dict set ::env(LAYERS_RC) "*" Metal1 cap 6.878400e-04
-#dict set ::env(LAYERS_RC) "*" Metal2 res 5.150000e-03
-#dict set ::env(LAYERS_RC) "*" Metal2 cap 9.302000e-04
-#dict set ::env(LAYERS_RC) "*" Metal3 res 5.150000e-03
-#dict set ::env(LAYERS_RC) "*" Metal3 cap 9.200000e-04
-#dict set ::env(LAYERS_RC) "*" Metal4 res 5.150000e-03
-#dict set ::env(LAYERS_RC) "*" Metal4 cap 9.178800e-04
-#dict set ::env(LAYERS_RC) "*" Metal5 res 5.150000e-03
-#dict set ::env(LAYERS_RC) "*" Metal5 cap 8.882600e-04
-#dict set ::env(LAYERS_RC) "*" TopMetal1 res 1.280488e-04
-#dict set ::env(LAYERS_RC) "*" TopMetal1 cap 1.108496e-03
-#dict set ::env(LAYERS_RC) "*" TopMetal2 res 7.250000e-05
-#dict set ::env(LAYERS_RC) "*" TopMetal2 cap 9.006000e-04
 
 set ::env(VIAS_R) [dict create]
 
