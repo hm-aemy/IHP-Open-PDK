@@ -40,12 +40,12 @@ set ::env(PAD_SPICE_MODELS) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sg13g2_io/spi
 set ::env(PAD_CDLS) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sg13g2_io/cdl/sg13g2_io.cdl"
 
 # Pad IO sites
-set ::env(PAD_IO_SITE_NAME) "IOLibSite"
+set ::env(PAD_SITE_NAME) "IOLibSite"
 set ::env(PAD_CORNER_SITE_NAME) "IOLibCSite"
 
 # Pad fake IO sites information
-set ::env(PAD_FAKE_IO_SITE_HEIGHT) "180"
-set ::env(PAD_FAKE_IO_SITE_WIDTH) "1"
+set ::env(PAD_FAKE_SITE_HEIGHT) "180"
+set ::env(PAD_FAKE_SITE_WIDTH) "0.2"
 set ::env(PAD_FAKE_CORNER_SITE_HEIGHT) "180"
 set ::env(PAD_FAKE_CORNER_SITE_WIDTH) "180"
 
