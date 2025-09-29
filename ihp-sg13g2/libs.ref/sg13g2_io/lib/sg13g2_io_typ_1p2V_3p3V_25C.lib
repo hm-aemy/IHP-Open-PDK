@@ -4596,4 +4596,55 @@ library (sg13g2_io_typ_1p2V_3p3V_25C) {
       related_pg_pin : vdd;
     }
   }
+cell (sg13g2_IOPadAnalog) {
+    pad_cell : true;
+    area : 14400;
+    cell_footprint : "input";
+    pad_drivers : 1;
+    bond_pads : 1;
+    pg_pin (iovdd) {
+      pg_type : primary_power;
+      voltage_name : "iovdd";
+    }
+    pg_pin (iovss) {
+      pg_type : primary_ground;
+      voltage_name : "iovss";
+    }
+    pg_pin (vdd) {
+      pg_type : primary_power;
+      voltage_name : "vdd";
+    }
+    pg_pin (vss) {
+      pg_type : primary_ground;
+      voltage_name : "vss";
+    }
+    pin (pad) {
+      direction : "input";
+      is_pad : true;
+      input_voltage : "pad";
+      fanout_load : 1;
+      related_ground_pin : iovss;
+      related_power_pin : iovdd;
+      max_transition : 3.5;
+      capacitance : 0.220657;
+      rise_capacitance : 0.222681;
+      rise_capacitance_range (0.195297, 0.241559);
+      fall_capacitance : 0.218632;
+      fall_capacitance_range (0.197848, 0.232141);
+    }
+    pin (padres) {
+      direction : "input";
+      is_pad : true;
+      input_voltage : "pad";
+      fanout_load : 1;
+      related_ground_pin : iovss;
+      related_power_pin : iovdd;
+      max_transition : 3.5;
+      capacitance : 0.220657;
+      rise_capacitance : 0.222681;
+      rise_capacitance_range (0.195297, 0.241559);
+      fall_capacitance : 0.218632;
+      fall_capacitance_range (0.197848, 0.232141);
+    }
+  }
 }

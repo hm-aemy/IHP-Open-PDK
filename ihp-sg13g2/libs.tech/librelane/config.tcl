@@ -32,15 +32,49 @@ set ::env(CELL_VERILOG_MODELS) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/$::env(STD
 set ::env(CELL_SPICE_MODELS) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/$::env(STD_CELL_LIBRARY)/spice/$::env(STD_CELL_LIBRARY).spice"
 set ::env(CELL_CDLS) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/$::env(STD_CELL_LIBRARY)/cdl/$::env(STD_CELL_LIBRARY).cdl"
 
-# GPIO Pads
-set ::env(GPIO_PADS_LEF) "\
-	$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sg13g2_io/lef/sg13g2_io.lef\
-	$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sg13g2_io/lef/sg13g2_io_notracks.lef\
+# IO pads
+set ::env(PAD_LEFS) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sg13g2_io/lef/sg13g2_io.lef"
+set ::env(PAD_GDS) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sg13g2_io/gds/sg13g2_io.gds"
+set ::env(PAD_VERILOG_MODELS) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sg13g2_io/verilog/sg13g2_io.v"
+set ::env(PAD_SPICE_MODELS) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sg13g2_io/spice/sg13g2_io.spi"
+set ::env(PAD_CDLS) "$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sg13g2_io/cdl/sg13g2_io.cdl"
+
+# Pad IO sites
+set ::env(PAD_SITE_NAME) "IOLibSite"
+set ::env(PAD_CORNER_SITE_NAME) "IOLibCSite"
+
+# Pad fake IO sites information
+set ::env(PAD_FAKE_SITE_HEIGHT) "180"
+set ::env(PAD_FAKE_SITE_WIDTH) "0.2"
+set ::env(PAD_FAKE_CORNER_SITE_HEIGHT) "180"
+set ::env(PAD_FAKE_CORNER_SITE_WIDTH) "180"
+
+# Set IO pad information
+set ::env(PAD_CELLS) [dict create]
+dict set ::env(PAD_CELLS) "sg13g2_IOPad*" "80, 180"
+set ::env(PAD_CORNER) "sg13g2_Corner"
+set ::env(PAD_FILLERS) "\
+    sg13g2_Filler10000\
+    sg13g2_Filler4000\
+    sg13g2_Filler2000\
+    sg13g2_Filler1000\
+    sg13g2_Filler400\
+    sg13g2_Filler200\
 "
 
-set ::env(GPIO_PADS_VERILOG) "\
-	$::env(PDK_ROOT)/$::env(PDK)/libs.ref/sg13g2_io/verilog/sg13g2_io.v
-"
+# Pad bondpad information (if needed)
+# TODO bondpads need to be part of the PDK
+set ::env(PAD_BONDPAD_NAME) "bondpad_70x70"
+set ::env(PAD_BONDPAD_WIDTH) "70"
+set ::env(PAD_BONDPAD_HEIGHT) "70"
+set ::env(PAD_BONDPAD_OFFSETS) [dict create]
+dict set ::env(PAD_BONDPAD_OFFSETS) "sg13g2_IOPad*" "5.0, -70.0"
+
+# Pad io terminals (if needed)
+#set ::env(PAD_PLACE_IO_TERMINALS)
+
+# Sealring offset
+set ::env(PAD_EDGE_SPACING) "140"
 
 ## magic setup
 set ::env(MAGICRC) "$::env(PDK_ROOT)/$::env(PDK)/libs.tech/magic/ihp-sg13g2.magicrc"
@@ -108,36 +142,46 @@ set ::env(FP_PDN_CORE_RING_HOFFSET) 4.5
 set ::env(MACRO_BLOCKAGES_LAYER) "Metal1 Metal2 Metal3 Metal4 Metal5 TopMetal1"
 
 # Used for parasitics estimation, IR drop analysis, etc
-set ::env(LAYERS_RC) [dict create]
+#set ::env(LAYERS_RC) [dict create]
 
-# Don't set RC values manually, they appear to be inaccurate
-# If not set, OpenROAD seems to pick them up from the tech lef?
-# TODO needs more investigation
+# RC fit from OpenROAD
+# https://github.com/The-OpenROAD-Project/OpenROAD-flow-scripts/commit/a3ea4d0a4c10cb65a5314ed541dfc1bc42979f8d
+dict set ::env(LAYERS_RC) "*" Metal1 res 8.54576E-03
+dict set ::env(LAYERS_RC) "*" Metal1 cap 1e-10
+dict set ::env(LAYERS_RC) "*" Metal2 res 2.53519E-03
+dict set ::env(LAYERS_RC) "*" Metal2 cap 1.69121E-04
+dict set ::env(LAYERS_RC) "*" Metal3 res 1.54329E-03
+dict set ::env(LAYERS_RC) "*" Metal3 cap 1.82832E-04
+dict set ::env(LAYERS_RC) "*" Metal4 res 6.31424E-04
+dict set ::env(LAYERS_RC) "*" Metal4 cap 1.66454E-04
+dict set ::env(LAYERS_RC) "*" Metal5 res 6.84051E-04
+dict set ::env(LAYERS_RC) "*" Metal5 cap 8.57431E-05
 
-#dict set ::env(LAYERS_RC) "*" Metal1 res 0.135e-03
-#dict set ::env(LAYERS_RC) "*" Metal1 cap 3.49E-05
-#dict set ::env(LAYERS_RC) "*" Metal2 res 0.103e-03
-#dict set ::env(LAYERS_RC) "*" Metal2 cap 1.81E-05
-#dict set ::env(LAYERS_RC) "*" Metal3 res 0.103e-03
-#dict set ::env(LAYERS_RC) "*" Metal3 cap 2.14962E-04
-#dict set ::env(LAYERS_RC) "*" Metal4 res 0.103e-03
-#dict set ::env(LAYERS_RC) "*" Metal4 cap 1.48128E-04
-#dict set ::env(LAYERS_RC) "*" Metal5 res 0.103e-03
-#dict set ::env(LAYERS_RC) "*" Metal5 cap 1.54087E-04
-#dict set ::env(LAYERS_RC) "*" TopMetal1 res 0.021e-03
-#dict set ::env(LAYERS_RC) "*" TopMetal1 cap 1.54087E-04
-#dict set ::env(LAYERS_RC) "*" TopMetal2 res 0.0145e-03
-#dict set ::env(LAYERS_RC) "*" TopMetal2 cap 1.54087E-04
+# default values as converted by OpenROAD from the tech lef
+#dict set ::env(LAYERS_RC) "*" Metal1 res 8.437500e-04
+#dict set ::env(LAYERS_RC) "*" Metal1 cap 6.878400e-05
+#dict set ::env(LAYERS_RC) "*" Metal2 res 5.150000e-04
+#dict set ::env(LAYERS_RC) "*" Metal2 cap 9.302000e-05
+#dict set ::env(LAYERS_RC) "*" Metal3 res 5.150000e-04
+#dict set ::env(LAYERS_RC) "*" Metal3 cap 9.200000e-05
+#dict set ::env(LAYERS_RC) "*" Metal4 res 5.150000e-04
+#dict set ::env(LAYERS_RC) "*" Metal4 cap 9.178800e-05
+#dict set ::env(LAYERS_RC) "*" Metal5 res 5.150000e-04
+#dict set ::env(LAYERS_RC) "*" Metal5 cap 8.882600e-05
+#dict set ::env(LAYERS_RC) "*" TopMetal1 res 1.280488e-05
+#dict set ::env(LAYERS_RC) "*" TopMetal1 cap 1.108496e-04
+#dict set ::env(LAYERS_RC) "*" TopMetal2 res 7.250000e-06
+#dict set ::env(LAYERS_RC) "*" TopMetal2 cap 9.006000e-05
 
-#set ::env(VIAS_R) [dict create]
+set ::env(VIAS_R) [dict create]
 
-#dict set ::env(VIAS_R) "*" Cont res 2.2E-3
-#dict set ::env(VIAS_R) "*" Via1 res 2.0E-3
-#dict set ::env(VIAS_R) "*" Via2 res 2.0E-3
-#dict set ::env(VIAS_R) "*" Via3 res 2.0E-3
-#dict set ::env(VIAS_R) "*" Via4 res 2.0E-3
-#dict set ::env(VIAS_R) "*" TopVia1 res 0.4E-3
-#dict set ::env(VIAS_R) "*" TopVia2 res 0.22E-3
+dict set ::env(VIAS_R) "*" Cont res 2.2E-3
+dict set ::env(VIAS_R) "*" Via1 res 2.0E-3
+dict set ::env(VIAS_R) "*" Via2 res 2.0E-3
+dict set ::env(VIAS_R) "*" Via3 res 2.0E-3
+dict set ::env(VIAS_R) "*" Via4 res 2.0E-3
+dict set ::env(VIAS_R) "*" TopVia1 res 0.4E-3
+dict set ::env(VIAS_R) "*" TopVia2 res 0.22E-3
 
 # Don't set DATA_WIRE_RC_LAYER, CLOCK_WIRE_RC_LAYER
 # Have been renamed to SIGNAL_WIRE_RC_LAYERS, CLOCK_WIRE_RC_LAYERS
